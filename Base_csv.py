@@ -1,7 +1,7 @@
 import csv
 
 
-def cargar_usuarios():
+def cargar_alumno():
     # Usuarios existentes
     usuarios = []
     with open(db_file, 'r', newline='') as file:
@@ -10,50 +10,50 @@ def cargar_usuarios():
             usuarios.append(row)
     return usuarios
 
-def guardar_usuarios(usuarios):
+def guardar_alumnos(alumnos):
     # Guardar cambios
     with open(db_file, 'w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=campos)
         writer.writeheader()
-        writer.writerows(usuarios)
+        writer.writerows(alumnos)
 
-def crear_usuario(usuario):
-    usuarios = cargar_usuarios()
-    usuarios.append(usuario)
-    guardar_usuarios(usuarios)
+def crear_alumno(alumno):
+    alumnos = cargar_alumno()
+    alumnos.append(alumno)
+    guardar_alumnos(alumnos)
 
 #Buscar
-def obtener_usuario_por_id(boleta):
-    usuarios = cargar_usuarios()
-    for usuario in usuarios:
-        if usuario['boleta'] == boleta:
-            return usuario
+def obtener_alumno_por_boleta(boleta):
+    alumnos = cargar_alumno()
+    for alumno in alumnos:
+        if alumno['boleta'] == boleta:
+            return alumno
     return None
 # modificar
-def actualizar_usuario(boleta, nuevos_datos):
-    usuarios = cargar_usuarios()
-    for usuario in usuarios:
-        if usuario['boleta'] == boleta:
-            usuario.update(nuevos_datos)
-            guardar_usuarios(usuarios)
+def actualizar_alumno(boleta, nuevos_datos):
+    alumnos = cargar_alumno()
+    for alumno in alumnos:
+        if alumno['boleta'] == boleta:
+            alumno.update(nuevos_datos)
+            guardar_alumnos(alumnos)
             return True
     return False
 #Eliminar
-def eliminar_usuario(boleta):
-    usuarios = cargar_usuarios()
-    for usuario in usuarios:
-        if usuario['boleta'] == boleta:
-            usuarios.remove(usuario)
-            guardar_usuarios(usuarios)
+def eliminar_alumno(boleta):
+    alumnos = cargar_alumno()
+    for alumno in alumnos:
+        if alumno['boleta'] == boleta:
+            alumnos.remove(alumno)
+            guardar_alumnos(alumnos)
             return True
     return False
 
 #visualizar
-def mostrar_usuarios():
-    usuarios = cargar_usuarios()
-    if usuarios:
-        for usuario in usuarios:
-            print(f"Boleta: {usuario['boleta']}, Nombre: {usuario['nombre']}, Edad: {usuario['edad']}, Email: {usuario['email']}")
+def mostrar_alumnos():
+    alumnos = cargar_alumno()
+    if alumnos:
+        for alumno in alumnos:
+            print(f"Boleta: {alumno['boleta']}, Nombre: {alumno['nombre']}, Edad: {alumno['edad']}, Email: {alumno['email']}")
     else:
         print("No hay alumnos registrados.")
 
@@ -81,23 +81,23 @@ def principal():
             nombre = input("Ingrese el nombre del alumno: ")
             edad = input("Ingrese la edad del alumno: ")
             email = input("Ingrese el correo electrónico del alumno: ")
-            nuevo_usuario = {
+            nuevo_alumno = {
                 'boleta': boleta,
                 'nombre': nombre,
                 'edad': edad,
                 'email': email
             }
-            crear_usuario(nuevo_usuario)
+            crear_alumno(nuevo_alumno)
             print("Usuario Nuevo dado de alta")
 
         elif opcion == "2":
-            mostrar_usuarios()
+            mostrar_alumnos()
 
         elif opcion == "3":
             boleta = input("Ingrese el Boleta del alumno a buscar: ")
-            usuario_obtenido = obtener_usuario_por_id(boleta)
-            if usuario_obtenido:
-                print(f"Boleta: {usuario_obtenido['boleta']}, Nombre: {usuario_obtenido['nombre']}, Edad: {usuario_obtenido['edad']}, Email: {usuario_obtenido['email']}")
+            alumno_obtenido = obtener_alumno_por_boleta(boleta)
+            if alumno_obtenido:
+                print(f"Boleta: {alumno_obtenido['boleta']}, Nombre: {alumno_obtenido['nombre']}, Edad: {alumno_obtenido['edad']}, Email: {alumno_obtenido['email']}")
             else:
                 print('No se encontró el alumno.')
 
@@ -113,14 +113,14 @@ def principal():
             email = input("Ingrese el nuevo correo electrónico del alumno (si no va realizar cambios de enter): ")
             if email:
                 nuevos_datos['email'] = email
-            if actualizar_usuario(boleta, nuevos_datos):
+            if actualizar_alumno(boleta, nuevos_datos):
                 print('Alumno actualizado exitosamente.')
             else:
                 print('No se encontró el alumno para actualizar.')
 
         elif opcion == "5":
             boleta = input("Ingrese la Boleta del alumno a eliminar: ")
-            if eliminar_usuario(boleta):
+            if eliminar_alumno(boleta):
                 print('Alumno eliminado exitosamente.')
             else:
                 print('No se encontró el alumno para eliminar.')
